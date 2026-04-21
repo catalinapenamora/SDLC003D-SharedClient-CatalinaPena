@@ -1,20 +1,12 @@
-name: Pipeline de la Aplicacion Consumidora
+name: Call Shared Workflow
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch:
+    # Trigger: cualquier push a cualquier rama
 
 jobs:
-  # Este job no tiene "runs-on" ni "steps", porque todo eso viene del template
-  llamar-despliegue-desarrollo:
-    # AQUÍ ESTÁ LA MAGIA: Llamamos a tu repositorio Core
-    uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy.yaml@main
-    with:
-      entorno: 'desarrollo'
-
-  llamar-despliegue-produccion:
-    needs: llamar-despliegue-desarrollo # Espera a que termine desarrollo
-    uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy.yaml@main
-    with:
-      entorno: 'producción'
+  mi-job:
+    uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy-api.yaml@pipeTest
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
