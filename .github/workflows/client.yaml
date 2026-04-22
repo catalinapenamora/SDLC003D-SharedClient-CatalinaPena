@@ -6,7 +6,7 @@ on:
 
 jobs:
   mi-job:
-    uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy-api.yaml@pipeTest
+    uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy-api.yaml@main
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
