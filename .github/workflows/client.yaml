@@ -1,15 +1,17 @@
-name: Call Shared Workflow V2 (By Tags)
+name: Despliegue por Tags (V3)
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*'  # Se activa al subir tags como v1.0.0, v2.0.0, etc.
+  workflow_dispatch: # Permite ejecución manual desde la web
 
 jobs:
   usar-receta-compartida:
+    # Asegúrate de que esta ruta sea la correcta a tu repositorio de workflows
     uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy-api.yaml@main
     with:
-      image-name: "demo-api"
+      image-name: demo-api
       image-tag: ${{ github.ref_name }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
