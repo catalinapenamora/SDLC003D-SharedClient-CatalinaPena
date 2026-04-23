@@ -1,12 +1,16 @@
-name: Call Shared Workflow
+name: Call Shared Workflow V2 (By Tags)
 
 on:
   push:
-    # Trigger: cualquier push a cualquier rama
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  mi-job:
+  usar-receta-compartida:
     uses: catalinapenamora/SDLC003D-SharedWorkflows-CatalinaPena/.github/workflows/deploy-api.yaml@main
+    with:
+      image-name: "demo-api"
+      image-tag: ${{ github.ref_name }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
