@@ -50,6 +50,27 @@ const createApp = () => {
   });
 });
 
+app.get('/api/suma', (req, res) => {
+  let { a, b } = req.query;
+
+  // Convertir a número (porque vienen como string)
+  a = Number(a);
+  b = Number(b);
+
+  // Validación
+  if (isNaN(a) || isNaN(b)) {
+    return res.status(400).json({
+      error: 'a y b deben ser números válidos'
+    });
+  }
+
+  const resultado = a + b;
+
+  res.status(200).json({
+    resultado
+  });
+});
+
   app.use((req, res) => {
     res.status(404).json({ error: 'Ruta no encontrada' });
   });
