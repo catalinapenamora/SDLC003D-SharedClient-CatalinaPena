@@ -1,5 +1,5 @@
 {
-  "name": "auy1104-api-ejemplo-docker",
+  "name": "api-ejemplo",
   "version": "1.0.0",
   "description": "API académica de ejemplo para AUY1104 (Express + Docker)",
   "main": "src/index.js",
