@@ -40,16 +40,14 @@ app.listen(PORT, () => {
   console.log(`API escuchando en http://0.0.0.0:${PORT}`);
 });
 // ... (tus rutas app.get, app.post, etc)
-
 const PORT = process.env.PORT || 3000;
-// Solo escucha si no estamos en modo de prueba
+
 if (process.env.NODE_ENV !== 'test') {
     app.listen(PORT, () => {
         console.log(`API escuchando en http://0.0.0.0:${PORT}`);
     });
 }
 
-// ESTA ES LA PARTE CLAVE:
-// Exportamos 'app' pero con el nombre 'createApp' para que el test sea feliz
-const createApp = () => app; 
+// Exportación para que el test encuentre la app
+const createApp = () => app;
 module.exports = { createApp };
