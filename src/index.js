@@ -32,6 +32,24 @@ const createApp = () => {
     });
   });
 
+  app.post('/api/suma', (req, res) => {
+  const { a, b } = req.body;
+
+  // Validación
+  if (typeof a !== 'number' || typeof b !== 'number') {
+    return res.status(400).json({
+      error: 'a y b deben ser números'
+    });
+  }
+
+  // Resultado
+  const resultado = a + b;
+
+  res.status(201).json({
+    resultado
+  });
+});
+
   app.use((req, res) => {
     res.status(404).json({ error: 'Ruta no encontrada' });
   });
