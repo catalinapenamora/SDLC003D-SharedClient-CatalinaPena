@@ -31,11 +31,11 @@ spec:
           # Sonda de disponibilidad: K8s espera que responda antes de enviarle usuarios
           readinessProbe:
             httpGet:
-              path: /health
+              path: /ruta-falsa-para-ev3
               port: 3000
-            initialDelaySeconds: 30  # Ajustado a 30s según las indicaciones
+            initialDelaySeconds: 30  
             periodSeconds: 10
-            timeoutSeconds: 10       # Ajustado a 10s máximo de espera
+            timeoutSeconds: 10      
           # Sonda de supervivencia: si tu app se congela, K8s la reinicia sola
           livenessProbe:
             httpGet:
