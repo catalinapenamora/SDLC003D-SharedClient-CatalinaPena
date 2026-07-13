@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: asanchezo/demo-api:latest 
+        image: asanchezo/demo-api:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
@@ -35,21 +35,6 @@ spec:
             port: 3000
           initialDelaySeconds: 15
           timeoutSeconds: 10
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: demo-api
-spec:
-  selector:
-    app: demo-api
-    color: blue 
-  type: LoadBalancer
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
 
 ---
 apiVersion: apps/v1
