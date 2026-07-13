@@ -1,46 +1,95 @@
-# Misma convención que client.yaml → image-name: demo-api
-# Sustituir YOUR_DOCKERHUB_USERNAME por tu usuario (igual que secret DOCKER_USERNAME).
-# La receta deploy-api publica: <usuario>/demo-api:<tag> y :latest
-#
-# Borde HTTP: no duplicar HAProxy aquí. Aplicar primero en el cluster
-# AUY1104-SharedWorkflows k8s-manifests/haproxy-academic/shared/
-# (ea2-haproxy-academic). Ruta pública :30088 …/backend/* → este Service demo-api:3000.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-api
+  name: app-blue
+  namespace: demo-api
   labels:
-    app: demo-api
+    app: app
+    version: blue
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo-api
+      app: app
+      version: blue
   template:
     metadata:
       labels:
-        app: demo-api
+        app: app
+        version: blue
     spec:
       containers:
-        - name: api
-          image: asanchezoduoc/demo-api:latest
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 3000
-          # Sonda de disponibilidad: K8s espera que responda antes de enviarle usuarios
-          readinessProbe:
-            httpGet:
-              path: /ruta-falsa-para-ev3
-              port: 3000
-            initialDelaySeconds: 30  
-            periodSeconds: 10
-            timeoutSeconds: 10      
-          # Sonda de supervivencia: si tu app se congela, K8s la reinicia sola
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 30  # Ajustado a 30s según las indicaciones
-            periodSeconds: 20
-            timeoutSeconds: 10       # Ajustado a 10s máximo de espera
+      - name: app-contenedor
+        image: catalinapenamora/demo-api:latest 
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-bg-service
+  namespace: demo-api
+spec:
+  selector:
+    app: app
+    # El pipeline cambiará dinámicamente este selector entre 'blue' o 'green'
+    version: blue 
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-green
+  namespace: demo-api
+  labels:
+    app: app
+    version: green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+      version: green
+  template:
+    metadata:
+      labels:
+        app: app
+        version: green
+    spec:
+      containers:
+      - name: app-contenedor
+        image: catalinapenamora/demo-api:latest
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 10
