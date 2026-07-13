@@ -1,4 +1,4 @@
-const { createApp } = require('./src/lib/index');
+const { createApp } = require('./src/index');
 
 const app = createApp();
 
