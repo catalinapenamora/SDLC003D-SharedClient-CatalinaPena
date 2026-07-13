@@ -1,26 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-blue
-  namespace: demo-api
+  name: demo-api-blue
   labels:
-    app: app
-    version: blue
+    app: demo-api
+    color: blue
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
-      version: blue
+      app: demo-api
+      color: blue
   template:
     metadata:
       labels:
-        app: app
-        version: blue
+        app: demo-api
+        color: blue
     spec:
       containers:
-      - name: app-contenedor
-        image: catalinapenamora/demo-api:latest 
+      - name: api
+        image: asanchezo/demo-api:latest 
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
@@ -41,13 +40,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-bg-service
-  namespace: demo-api
+  name: demo-api
 spec:
   selector:
-    app: app
-    # El pipeline cambiará dinámicamente este selector entre 'blue' o 'green'
-    version: blue 
+    app: demo-api
+    color: blue 
   type: LoadBalancer
   ports:
     - protocol: TCP
@@ -58,26 +55,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-green
-  namespace: demo-api
+  name: demo-api-green
   labels:
-    app: app
-    version: green
+    app: demo-api
+    color: green
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app
-      version: green
+      app: demo-api
+      color: green
   template:
     metadata:
       labels:
-        app: app
-        version: green
+        app: demo-api
+        color: green
     spec:
       containers:
-      - name: app-contenedor
-        image: catalinapenamora/demo-api:latest
+      - name: api
+        image: asanchezo/demo-api:latest
         ports:
         - containerPort: 3000
         imagePullPolicy: Always
